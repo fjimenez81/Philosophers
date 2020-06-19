@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fernando <fernando@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/18 20:36:26 by fernando          #+#    #+#             */
-/*   Updated: 2020/06/18 20:51:48 by fernando         ###   ########.fr       */
+/*   Updated: 2020/06/19 20:15:20 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@
 
 typedef struct		s_args
 {
-	pthread_mutex_t	fork;
-	pthread_mutex_t	*state;
-	pthread_mutex_t	*meals;
-	pthread_mutex_t	*next;
+	sem_t			*forks;
+	sem_t			*meals;
+	sem_t			*death;
     pthread_t       tid;
 	int				nb_phi;
 	int				t_die;
@@ -40,6 +39,8 @@ typedef struct		s_args
 	long			last_meal;
 	int				meal_cnt;
 	int				who;
+	int				flag;
+	int				kill;
 }					t_args;
 
 long	ft_time(void);

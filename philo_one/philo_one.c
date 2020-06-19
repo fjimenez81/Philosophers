@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 18:14:24 by fernando          #+#    #+#             */
-/*   Updated: 2020/06/18 20:55:37 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/06/19 15:03:49 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,10 @@ void	*meal_loop(void *ptr)
 	int		i;
 
 	s = (t_args *)ptr;
-	i = 0;
 	pthread_mutex_lock(s->meals);
-	while (i < s->nb_phi)
-	{
+	i = -1;
+	while (++i < s->nb_phi)
 		pthread_mutex_lock(s->meals);
-		i++;
-	}
 	pthread_mutex_unlock(s->state);
 	return (NULL);
 }
