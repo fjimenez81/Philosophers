@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/18 20:36:26 by fernando          #+#    #+#             */
-/*   Updated: 2020/06/19 20:15:20 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/06/22 15:30:30 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ typedef struct		s_args
 	long			last_meal;
 	int				meal_cnt;
 	int				who;
-	int				flag;
-	int				kill;
 }					t_args;
 
 long	ft_time(void);

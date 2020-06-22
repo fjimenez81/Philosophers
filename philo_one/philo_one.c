@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 18:14:24 by fernando          #+#    #+#             */
-/*   Updated: 2020/06/19 15:03:49 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/06/22 15:23:20 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*death_loop(void *ptr)
 	{
 		if (ft_time() - s->last_meal > s->t_die && alive)
 		{
-			ft_message(s->t_start, s->who, "has died");
+			ft_message(s->t_start, s->who, "died");
 			pthread_mutex_unlock(s->state);
 			alive = 0;
 		}
@@ -69,13 +69,12 @@ void *makeActions(void *param)
 		usleep(s->t_eat * 1000);
 		pthread_mutex_unlock(&s->fork);
 		pthread_mutex_unlock(s->next);
-		if (s->meal_cnt > 0)
-			s->meal_cnt--;
-		else if (s->meal_cnt == 0)
-			break ;
 		ft_message(s->t_start, s->who, "is sleeping");
 		usleep(s->t_sleep * 1000);
 		ft_message(s->t_start, s->who, "is thinking");
+		s->meal_cnt++;
+		if (s->meal_cnt == s->nb_eat)
+			pthread_mutex_lock(s->state);
 	}
 	return (NULL);
 }
@@ -125,7 +124,7 @@ int main(int ac, char **av)
 		s[i].nb_eat = (ac == 6) ? ft_atoi(av[5]) : -1;
         s[i].t_start = ft_time();
 		s[i].last_meal = s[i].t_start;
-		s[i].meal_cnt = (ac == 6) ? ft_atoi(av[5]) : -1;
+		s[i].meal_cnt = 0;
 		s[i].who = i + 1;
 		s[i].next = (i != 0) ? &s[i - 1].fork : &s[s[0].nb_phi - 1].fork;
     }

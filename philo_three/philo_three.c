@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/20 15:37:45 by fjimenez          #+#    #+#             */
-/*   Updated: 2020/06/20 18:13:42 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/06/22 15:10:43 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*death_loop(void *ptr)
 	{
 		if (ft_time() - s->last_meal > s->t_die)
 		{
-			ft_message(s->t_start, s->who, "has died");
+			ft_message(s->t_start, s->who, "died");
 			i = 0;
 			while (i < s->nb_phi)
 				kill(s->pid[i++], SIGTERM);
@@ -80,7 +80,7 @@ void	makeActions(t_args s)
 		ft_message(s.t_start, s.who, "is thinking");
 		s.meal_cnt++;
 		if (s.meal_cnt == s.nb_eat)
-			sem_post(s.meals);
+			sem_wait(s.forks);
 	}
 }
 
@@ -135,6 +135,5 @@ int main(int ac, char **av)
 	s.forks = sem_open("forks", O_CREAT, S_IRWXU, (ft_atoi(av[1]) / 2));
 	s.meals = sem_open("meals", O_CREAT, S_IRWXU, 0); 
 	philo_three(s);
-	
     return (0);
 }

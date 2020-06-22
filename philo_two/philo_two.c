@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/18 20:36:48 by fernando          #+#    #+#             */
-/*   Updated: 2020/06/19 20:55:30 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/06/22 15:38:15 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,29 @@ void	*meal_loop(void *ptr)
 void	*death_loop(void *ptr)
 {
 	t_args	*s;
-	int		alive;
+	int		check;
 
 	s = (t_args *)ptr;
-	alive = 1;
+	check = 1;
 	while (1)
 	{
-		if (ft_time() - s->last_meal >= s->t_die && alive)
+		if (ft_time() - s->last_meal >= s->t_die)
 		{
-			ft_message(s->t_start, s->who, "has died");
+			ft_message(s->t_start, s->who, "died");
 			sem_post(s->death);
-			alive = 0;
-			sem_close(s[0].death);
-			sem_close(s[0].forks);
-			sem_close(s[0].meals);
-			sem_unlink("forks");
-			sem_unlink("death");
-			sem_unlink("meals");
+			sem_close(s->death);
+			sem_close(s->forks);
+			sem_close(s->meals);
+			//sem_unlink("forks");
+			//sem_unlink("death");
+			//sem_unlink("meals");
 			free(s);
 			exit (0);
 		}
-		else if (s->meal_cnt >= s->nb_eat && s->flag)
+		else if (s->meal_cnt >= s->nb_eat && check)
 		{
 			sem_post(s->meals);
-			s->flag = 0;
+			check = 0;
 		}
 	}
 	return (NULL);
@@ -77,10 +76,7 @@ void *makeActions(void *param)
 		usleep(s->t_sleep * 1000);
 		ft_message(s->t_start, s->who, "is thinking");
 		if (s->meal_cnt == s->nb_eat)
-		{
-			s->flag = 1;
-			break ;
-		}
+			sem_wait(s->forks);
 	}
 	return (NULL);
 }
