@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/20 15:37:45 by fjimenez          #+#    #+#             */
-/*   Updated: 2020/06/22 15:10:43 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/09/25 11:32:30 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	*meal_loop(void *ptr)
 void	*death_loop(void *ptr)
 {
 	t_args	*s;
-	int i;
 	int check;
 
 	s = (t_args *)ptr;
@@ -44,13 +43,6 @@ void	*death_loop(void *ptr)
 		if (ft_time() - s->last_meal > s->t_die)
 		{
 			ft_message(s->t_start, s->who, "died");
-			i = 0;
-			while (i < s->nb_phi)
-				kill(s->pid[i++], SIGTERM);
-			sem_close(s->forks);
-			sem_close(s->meals);
-			sem_unlink("forks");
-			sem_unlink("meals");
 			free(s->pid);
 			exit(0);
 		}

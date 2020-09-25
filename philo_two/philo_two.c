@@ -6,7 +6,7 @@
 /*   By: fjimenez <fjimenez@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/18 20:36:48 by fernando          #+#    #+#             */
-/*   Updated: 2020/06/22 15:38:15 by fjimenez         ###   ########.fr       */
+/*   Updated: 2020/09/25 11:46:03 by fjimenez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,6 @@ void	*death_loop(void *ptr)
 			sem_close(s->death);
 			sem_close(s->forks);
 			sem_close(s->meals);
-			//sem_unlink("forks");
-			//sem_unlink("death");
-			//sem_unlink("meals");
-			free(s);
 			exit (0);
 		}
 		else if (s->meal_cnt >= s->nb_eat && check)
@@ -100,14 +96,6 @@ void philo_two(t_args *s)
 	if (s[0].nb_eat > -1)
 		pthread_create(&s->tid, NULL, meal_loop, &s[0]);
 	sem_wait(death);
-	/*sem_close(s[0].death);
-	sem_close(s[0].forks);
-	sem_close(s[0].meals);
-	sem_unlink("forks");
-	sem_unlink("meals");
-	sem_unlink("death");*/
-	//free(s);
-	
 }
 
 int main(int ac, char **av)
@@ -136,5 +124,6 @@ int main(int ac, char **av)
 		
     }
 	philo_two(s);
+	free(s);
     return (0);
 }
